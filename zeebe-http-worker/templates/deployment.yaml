@@ -35,13 +35,13 @@ spec:
               protocol: TCP
           readinessProbe:
             httpGet:
-              path: {{ default "/actuator/health" .Values.readinessProbe.probePath }}
+              path: {{ default "/actuator/health" .Values.probePath }}
               port: http
             initialDelaySeconds: {{ default 30 .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ default 15 .Values.readinessProbe.periodSeconds }}
           livenessProbe:
             httpGet:
-              path: {{ default "/actuator/health" .Values.livenessProbe.probePath }}
+              path: {{ default "/actuator/health" .Values.probePath }}
               port: http
             initialDelaySeconds: {{ default 30 .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ default 15 .Values.livenessProbe.periodSeconds }}

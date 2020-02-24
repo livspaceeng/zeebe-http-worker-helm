@@ -23,21 +23,28 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{- if .Values.run }}
+{{ toYaml .Values.run | indent 10 -}}
+{{- end }}
           env:
           - name: zeebe.client.broker.contactPoint
             value: "{{ .Values.zeebeBrokerUrl }}"
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ default 80 .Values.service.internalPort }}
               protocol: TCP
-          #livenessProbe:
-          #  httpGet:
-          #    path: /
-          #    port: http
-          #readinessProbe:
-          #  httpGet:
-          #    path: /
-          #    port: http
+          readinessProbe:
+            httpGet:
+              path: {{ default "/actuator/health" .Values.readinessProbe.probePath }}
+              port: http
+            initialDelaySeconds: {{ default 30 .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ default 15 .Values.readinessProbe.periodSeconds }}
+          livenessProbe:
+            httpGet:
+              path: {{ default "/actuator/health" .Values.livenessProbe.probePath }}
+              port: http
+            initialDelaySeconds: {{ default 30 .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ default 15 .Values.livenessProbe.periodSeconds }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

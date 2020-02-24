@@ -18,6 +18,8 @@ service:
   type: ClusterIP
   port: 80
 
+probePath: /actuator/health
+
 ingress:
   enabled: false
   annotations: {}

@@ -31,20 +31,20 @@ spec:
             value: "{{ .Values.zeebeBrokerUrl }}"
           ports:
             - name: http
-              containerPort: {{ default 80 .Values.service.internalPort }}
+              containerPort: {{ default 8080 .Values.service.internalPort }}
               protocol: TCP
-          readinessProbe:
-            httpGet:
-              path: {{ default "/actuator/health" .Values.probePath }}
-              port: http
-            initialDelaySeconds: {{ default 30 .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ default 15 .Values.readinessProbe.periodSeconds }}
-          livenessProbe:
-            httpGet:
-              path: {{ default "/actuator/health" .Values.probePath }}
-              port: http
-            initialDelaySeconds: {{ default 30 .Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ default 15 .Values.livenessProbe.periodSeconds }}
+#           readinessProbe:
+#             httpGet:
+#               path: {{ default "/actuator/health" .Values.probePath }}
+#               port: http
+#             initialDelaySeconds: {{ default 30 .Values.readinessProbe.initialDelaySeconds }}
+#             periodSeconds: {{ default 15 .Values.readinessProbe.periodSeconds }}
+#           livenessProbe:
+#             httpGet:
+#               path: {{ default "/actuator/health" .Values.probePath }}
+#               port: http
+#             initialDelaySeconds: {{ default 30 .Values.livenessProbe.initialDelaySeconds }}
+#             periodSeconds: {{ default 15 .Values.livenessProbe.periodSeconds }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

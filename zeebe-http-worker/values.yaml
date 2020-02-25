@@ -16,7 +16,7 @@ zeebeBrokerUrl: "127.0.0.1:26500"
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 probePath: /actuator/health
 livenessProbe:

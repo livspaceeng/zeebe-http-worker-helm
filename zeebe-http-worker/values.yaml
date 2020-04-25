@@ -30,6 +30,9 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
+env:
+  enabled: false
+
 ingress:
   enabled: false
   annotations: {}

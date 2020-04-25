@@ -29,22 +29,25 @@ spec:
           env:
           - name: zeebe.client.broker.contactPoint
             value: "{{ .Values.zeebeBrokerUrl }}"
+{{- if .Values.env.enabled }}
+{{ toYaml .Values.env.values | indent 10 -}}
+{{- end }}
           ports:
             - name: http
               containerPort: {{ default 8080 .Values.service.internalPort }}
               protocol: TCP
-#           readinessProbe:
-#             httpGet:
-#               path: {{ default "/actuator/health" .Values.probePath }}
-#               port: http
-#             initialDelaySeconds: {{ default 30 .Values.readinessProbe.initialDelaySeconds }}
-#             periodSeconds: {{ default 15 .Values.readinessProbe.periodSeconds }}
-#           livenessProbe:
-#             httpGet:
-#               path: {{ default "/actuator/health" .Values.probePath }}
-#               port: http
-#             initialDelaySeconds: {{ default 30 .Values.livenessProbe.initialDelaySeconds }}
-#             periodSeconds: {{ default 15 .Values.livenessProbe.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ default "/actuator/health" .Values.probePath }}
+              port: http
+            initialDelaySeconds: {{ default 150 .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ default 30 .Values.readinessProbe.periodSeconds }}
+          livenessProbe:
+            httpGet:
+              path: {{ default "/actuator/health" .Values.probePath }}
+              port: http
+            initialDelaySeconds: {{ default 60 .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ default 15 .Values.livenessProbe.periodSeconds }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
